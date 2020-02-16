@@ -26,4 +26,11 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+A = FILTER u BY color MATCHES 'blue';
+B = FOREACH A GENERATE $0, $1, $4;
+C = FILTER u BY color MATCHES 'black';
+D = FOREACH C GENERATE $0, $1, $4;
+E = UNION B, D;
+F = ORDER E BY $0 ASC;
+G = FOREACH F GENERATE $1, $2;
+STORE G INTO 'output' USING PigStorage(',');

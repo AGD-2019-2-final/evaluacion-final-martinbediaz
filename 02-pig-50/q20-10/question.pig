@@ -28,3 +28,9 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FOREACH u GENERATE firstname, color, SUBSTRING(color, 0, 1);
+B = FOREACH A GENERATE $0, $1, COUNT(DIFF($2, 'b'));
+C = FOREACH B GENERATE $0, $1, ($2 > 0 ? '1' : '0' );
+D = FILTER C BY $2 MATCHES '1';
+E = FOREACH D GENERATE $0, $1;
+STORE E INTO 'output' USING PigStorage(',');

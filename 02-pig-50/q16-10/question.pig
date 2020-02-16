@@ -27,3 +27,15 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FILTER u BY color MATCHES 'blue';
+B = FOREACH A GENERATE $0, $1, $4;
+C = FOREACH u GENERATE id, firstname, color, SUBSTRING(firstname, 0, 1);
+D = FILTER C BY $3 MATCHES 'K';
+E = FOREACH D GENERATE $0, $1, $2;
+F = UNION B, E;
+G = ORDER F BY $0 ASC;
+H = FOREACH G GENERATE $1, $2;
+--grouped = GROUP G BY ($1,$2);
+--keycount = FOREACH grouped GENERATE group, COUNT(G);
+--n = FOREACH keycount GENERATE FLATTEN($0);
+STORE H INTO 'output' USING PigStorage(',');

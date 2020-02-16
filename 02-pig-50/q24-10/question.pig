@@ -25,4 +25,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+A = FOREACH u GENERATE REGEX_EXTRACT(birthday, '[1][9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]', 0);
+B = FOREACH A GENERATE SUBSTRING($0,5,7);
+STORE B INTO 'output';

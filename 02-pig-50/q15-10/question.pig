@@ -27,3 +27,8 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FILTER u BY color MATCHES 'blue';
+B = FOREACH A GENERATE $1, $4, SUBSTRING($1, 0, 1);
+C = FILTER B BY $2 MATCHES 'Z';
+D = FOREACH C GENERATE $0, $1;
+STORE D INTO 'output' USING PigStorage('\r');

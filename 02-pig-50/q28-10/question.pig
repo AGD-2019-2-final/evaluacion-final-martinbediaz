@@ -29,4 +29,6 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
-
+A = FOREACH u GENERATE SUBSTRING(birthday, 0 ,4) , SUBSTRING(birthday, 2 ,4);
+B = FOREACH A GENERATE CONCAT($0 ,',', $1) ;
+STORE B INTO 'output' USING PigStorage(',');

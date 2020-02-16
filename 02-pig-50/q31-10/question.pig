@@ -20,3 +20,7 @@ u = LOAD 'data.csv' USING PigStorage(',')
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
+A = FOREACH u GENERATE SUBSTRING(birthday, 0 ,4);
+grouped = GROUP A BY $0;
+wordcount = FOREACH grouped GENERATE group, COUNT(A);
+STORE wordcount INTO 'output' USING PigStorage(',');

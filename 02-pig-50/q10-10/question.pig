@@ -22,7 +22,13 @@ u = LOAD 'data.csv' USING PigStorage(',')
         surname:CHARARRAY, 
         birthday:CHARARRAY, 
         color:CHARARRAY, 
-        quantity:INT);
---
--- >>> Escriba su respuesta a partir de este punto <<<
---
+        quantity:CHARARRAY);
+A = FOREACH u GENERATE surname, SIZE(surname);
+B = ORDER A BY $1 desc, surname ;
+C = LIMIT B 5;
+--A = FOREACH u GENERATE $2, FLATTEN(STRSPLIT($2,''));
+--B = FOREACH A GENERATE $0, COUNT(TOBAG($1..));
+--C = ORDER B BY $0 ASC;
+--D = ORDER C BY $1 DESC;
+--E = LIMIT D 5;
+STORE C INTO 'output' USING PigStorage(',');

@@ -30,6 +30,19 @@ u = LOAD 'data.csv' USING PigStorage(',')
         birthday:CHARARRAY, 
         color:CHARARRAY, 
         quantity:INT);
+A = FOREACH u GENERATE surname, SUBSTRING(surname, 0, 1), id;
+B = FILTER A BY $1 MATCHES 'D';
+C = FILTER A BY $1 MATCHES 'E';
+D = FILTER A BY $1 MATCHES 'F';
+E = FILTER A BY $1 MATCHES 'G';
+F = FILTER A BY $1 MATCHES 'H';
+G = FILTER A BY $1 MATCHES 'I';
+H = FILTER A BY $1 MATCHES 'J';
+I = FILTER A BY $1 MATCHES 'K';
+J = UNION B, C, D, E, F, G, H, I;
+K = ORDER J BY $2 ASC;
+L = FOREACH K GENERATE $0;
+STORE L INTO 'output';
 --
 -- >>> Escriba su respuesta a partir de este punto <<<
 --
